@@ -1,0 +1,3 @@
+Position: 1182.484, -3256.521, 6.029 | Heading: -90.349 | OnFoot - Спавн
+Position: 1182.484, -3256.521, 6.029 | Heading: 270.000 | OnFoot - No name
+Position: 1182.484, -3256.521, 6.029 | Heading: 0.000 | OnFoot - No name

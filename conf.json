@@ -1,0 +1,9 @@
+{
+	"maxplayers" : 10,
+	"name" : "Truck World",
+	"gamemode" : "Truck v0.1",
+	"stream-distance" : 500.0,
+	"announce" : false,
+	"csharp" : "disabled",
+	"port": 22005
+}
