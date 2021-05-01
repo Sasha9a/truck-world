@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<script src="https://unpkg.com/vue"></script>
+
+<div class="container" id="app">
+    <div class="card-deck mt-5">
+        <div v-for="order in orders" class="card" style="max-width: 25%;">
+            <img v-bind:src="'https://gta5-ls.ru/images/vehicles/' + order.model + 'f.png'" class="card-img-top" v-bind:alt="order.model">
+            <div class="card-body">
+                <h5 class="card-title">{{ order.title }}</h5>
+                <p class="card-text">Зарплата: ${{ order.price }}<br/>Расстояние: {{ order.distance }} м.</p>
+                <button type="button" v-on:click="btnClick(order.id)" class="btn btn-primary">Взять заказ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="vue.js"></script>
+</body>
+</html>

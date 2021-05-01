@@ -1,4 +1,11 @@
+const Enterprises = require(`./ft_Enterprises`).Enterprises;
+let WorkBrowser;
+
 mp.events.add('startGame', () => {
+	mp.players.local.freezePosition(false);
+	mp.gui.chat.activate(true);
+	mp.gui.chat.show(true);
+
 	mp.game.ped.removeScenarioBlockingArea(0, true);
 	mp.game.streaming.setPedPopulationBudget(3);
 	mp.game.ped.setCreateRandomCops(true);
@@ -11,4 +18,45 @@ mp.events.add('startGame', () => {
 	mp.game.vehicle.setNumberOfParkedVehicles(-1);
 	mp.game.vehicle.displayDistantVehicles(true);
 	mp.game.graphics.disableVehicleDistantlights(false);
+
+	mp.events.callRemote('LoadEnterprises');
 });
+
+mp.events.add('ResEnterprises', (data) => {
+	if (data !== undefined) {
+		let en = JSON.parse(data);
+		for (let i = 0; en.length > i; i++) {
+			Enterprises.AddEnterprises(en[i].position, en[i].name);
+		}
+	}
+});
+
+mp.events.add('addEnterprise', (position, fullText) => {
+	Enterprises.AddEnterprises(JSON.parse(position), fullText);
+});
+
+mp.events.add('playerEnterColshape', (shape) => {
+	if (Enterprises.isSphere(shape)) {
+		WorkBrowser = mp.browsers.new('package://cef/listWorks/index.html');
+		WorkBrowser.execute("mp.invoke('focus', true)");
+		mp.gui.chat.activate(false);
+		mp.gui.chat.show(false);
+	}
+});
+
+mp.events.add('clickStartWork', (id) => {
+	closeWorkBrowser();
+});
+
+mp.keys.bind(0x09, true, () => { // TAB
+	if (WorkBrowser.active) {
+		closeWorkBrowser();
+	}
+});
+
+const closeWorkBrowser = () => {
+	WorkBrowser.execute("mp.invoke('focus', false)");
+	WorkBrowser.active = false;
+	mp.gui.chat.activate(true);
+	mp.gui.chat.show(true);
+}
