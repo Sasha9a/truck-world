@@ -24,3 +24,21 @@ mp.events.add('playerJoin', (player) => {
 mp.events.add('LoadEnterprises', (player) => {
 	player.call('ResEnterprises', [JSON.stringify(db.enterprises)]);
 });
+
+mp.events.add('LoadOrders', (player, id) => {
+	let res = [];
+	for (let i = 0; i < db.orders.length; i++) {
+		if (db.orders[i].id === id) {
+			res.push({
+				id: db.orders[i].id,
+				title: db.orders[i].title,
+				model: db.orders[i].model,
+				distance: Math.abs(Math.sqrt(Math.pow((db.enterprises[db.orders[i].to].finish.x - db.enterprises[db.orders[i].from].truckSpawn.x),2)
+					+ Math.pow((db.enterprises[db.orders[i].to].finish.y - db.enterprises[db.orders[i].from].truckSpawn.y),2)
+					+ Math.pow((db.enterprises[db.orders[i].to].finish.z - db.enterprises[db.orders[i].from].truckSpawn.z),2))).toFixed(1),
+				price: db.orders[i].price
+			});
+		}
+	}
+	player.call('ResLoadOrders', [JSON.stringify(res)]);
+});

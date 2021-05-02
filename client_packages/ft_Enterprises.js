@@ -24,10 +24,10 @@ class ft_Enterprises {
 	isSphere(sp) {
 		for (let i = 0; this.enterprises.length > i; i++) {
 			if (this.enterprises[i].sphere === sp) {
-				return true;
+				return i;
 			}
 		}
-		return false;
+		return -1;
 	}
 }
 

@@ -2,7 +2,6 @@ const Enterprises = require(`./ft_Enterprises`).Enterprises;
 let WorkBrowser;
 
 mp.events.add('startGame', () => {
-	mp.players.local.freezePosition(false);
 	mp.gui.chat.activate(true);
 	mp.gui.chat.show(true);
 
@@ -36,11 +35,19 @@ mp.events.add('addEnterprise', (position, fullText) => {
 });
 
 mp.events.add('playerEnterColshape', (shape) => {
-	if (Enterprises.isSphere(shape)) {
+	let id = Enterprises.isSphere(shape);
+	if (id !== -1) {
 		WorkBrowser = mp.browsers.new('package://cef/listWorks/index.html');
 		WorkBrowser.execute("mp.invoke('focus', true)");
+		mp.events.callRemote('LoadOrders', id);
 		mp.gui.chat.activate(false);
 		mp.gui.chat.show(false);
+	}
+});
+
+mp.events.add('ResLoadOrders', (data) => {
+	if (WorkBrowser.active) {
+		WorkBrowser.execute(`setOrders(\'${data}\');`);
 	}
 });
 

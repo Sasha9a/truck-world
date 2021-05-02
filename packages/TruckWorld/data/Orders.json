@@ -1,16 +1,18 @@
 [
 	{
 		"id": 0,
-		"title": "Сахар",
-		"model": "packer",
-		"distance": 2568.5,
-		"price": 400
+		"model": "benson",
+		"title": "Запчасти",
+		"from": 0,
+		"to": 1,
+		"price": 350
 	},
 	{
-		"id": 0,
-		"title": "Сахар",
-		"model": "packer",
-		"distance": 2568.5,
+		"id": 1,
+		"model": "pounder",
+		"title": "Двигатели",
+		"from": 1,
+		"to": 0,
 		"price": 400
 	}
 ]
