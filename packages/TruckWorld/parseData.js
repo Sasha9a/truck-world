@@ -5,9 +5,15 @@ const fileEnterprises = './packages/TruckWorld/data/Enterprises.json';
 
 class Data {
 	constructor() {
-		this.orders = [];
-		this.accounts = [{id: 0, name: "", money: 0}];
-		this.enterprises = []; // id, name, position
+		this.orders = [
+			// {id: 0, model: "", title: "", from: 0, to: 1, price: 0}
+		];
+		this.accounts = [
+			// {id: 0, name: "", money: 0}
+		];
+		this.enterprises = [
+			// {id: 0, name: "", position: {x: 0, y: 0, z: 0}, truckSpawn: {x: 0, y: 0, z: 0, heading: 0}, finish: {x: 0, y: 0, z: 0}}
+		];
 	}
 
 	setOrders(data) {

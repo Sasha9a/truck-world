@@ -11,6 +11,14 @@ mp.events.add('playerJoin', (player) => {
 	}
 	console.log(`Присоеденился к игре ${db.accounts[id].name}: Состояние \$${db.accounts[id].money}`);
 	player.call('startGame');
+
+	// let car = mp.vehicles.new(mp.joaat('pounder2'),
+	// 	new mp.Vector3(db.enterprises[0].truckSpawn.x, db.enterprises[0].truckSpawn.y, db.enterprises[0].truckSpawn.z), {
+	// 	heading: db.enterprises[0].truckSpawn.heading,
+	// 	color: [[0, 0, 0], [255, 255, 255]],
+	// 	dimension: player.dimension,
+	// 	numberPlate: 'OX647P'
+	// });
 });
 
 mp.events.add('LoadEnterprises', (player) => {
