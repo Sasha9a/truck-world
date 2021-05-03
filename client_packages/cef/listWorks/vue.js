@@ -1,4 +1,4 @@
-new Vue({
+let vue = new Vue({
 	el: '#app',
 	data: {
 		orders: [
@@ -6,12 +6,12 @@ new Vue({
 		]
 	},
 	methods: {
-		setOrders(data) {
-			this.orders = JSON.parse(data);
-		},
 		btnClick(id) {
 			mp.trigger('clickStartWork', id);
 		}
-
 	}
 });
+
+function setOrders(data) {
+	vue.orders = JSON.parse(data);
+}

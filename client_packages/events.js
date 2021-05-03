@@ -1,5 +1,8 @@
 const Enterprises = require(`./ft_Enterprises`).Enterprises;
 let WorkBrowser;
+let Route;
+let MarkerFinish;
+let SphereFinish;
 
 mp.events.add('startGame', () => {
 	mp.gui.chat.activate(true);
@@ -30,29 +33,62 @@ mp.events.add('ResEnterprises', (data) => {
 	}
 });
 
-mp.events.add('addEnterprise', (position, fullText) => {
-	Enterprises.AddEnterprises(JSON.parse(position), fullText);
-});
-
 mp.events.add('playerEnterColshape', (shape) => {
-	let id = Enterprises.isSphere(shape);
-	if (id !== -1) {
-		WorkBrowser = mp.browsers.new('package://cef/listWorks/index.html');
-		WorkBrowser.execute("mp.invoke('focus', true)");
-		mp.events.callRemote('LoadOrders', id);
-		mp.gui.chat.activate(false);
-		mp.gui.chat.show(false);
+	if (Enterprises.isSphere(shape) !== -1) {
+		mp.events.callRemote('LoadOrders', Enterprises.isSphere(shape));
+	} else if (shape === SphereFinish) {
+		if (mp.players.local.vehicle) {
+			Route.setRoute(false);
+			Route.destroy();
+			MarkerFinish.destroy();
+			SphereFinish.destroy();
+			mp.events.callRemote('finishWork');
+		}
 	}
 });
 
 mp.events.add('ResLoadOrders', (data) => {
-	if (WorkBrowser.active) {
-		WorkBrowser.execute(`setOrders(\'${data}\');`);
-	}
+	WorkBrowser = mp.browsers.new('package://cef/listWorks/index.html');
+	WorkBrowser.execute("mp.invoke('focus', true)");
+	WorkBrowser.execute(`setOrders('${data}');`);
+	mp.gui.chat.activate(false);
+	mp.gui.chat.show(false);
 });
 
 mp.events.add('clickStartWork', (id) => {
 	closeWorkBrowser();
+	mp.events.callRemote('SetWork', id);
+});
+
+mp.events.add('createRoute', (vector) => {
+	let vec = JSON.parse(vector);
+	Route = mp.blips.new(67, new mp.Vector3(vec.x, vec.y, vec.z), {
+		name: 'Грузовик',
+		scale: 1,
+		color: 3,
+		shortRange: false,
+		dimension: mp.players.local.dimension
+	});
+	Route.setRoute(true);
+});
+
+mp.events.add('startDriveWork', (vector) => {
+	Route.setRoute(false);
+	Route.destroy();
+	let vec = JSON.parse(vector);
+	Route = mp.blips.new(38, new mp.Vector3(vec.x, vec.y, vec.z), {
+		name: 'Разгрузка',
+		scale: 1,
+		color: 46,
+		shortRange: false,
+		dimension: mp.players.local.dimension
+	});
+	Route.setRoute(true);
+	MarkerFinish = mp.markers.new(1, new mp.Vector3(vec.x, vec.y, vec.z - 1.0), 5, {
+		color: [255, 255, 0, 128],
+		visible: true
+	});
+	SphereFinish = mp.colshapes.newSphere(vec.x, vec.y, vec.z + 0.5, 4);
 });
 
 mp.keys.bind(0x09, true, () => { // TAB

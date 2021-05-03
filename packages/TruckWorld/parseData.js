@@ -27,6 +27,10 @@ class Data {
 	setAccounts(data) {
 		this.accounts = data;
 	}
+	giveMoney(id, money) {
+		this.accounts[id].money += money;
+		fs.writeFileSync(fileAccounts, JSON.stringify(this.accounts, null, '\t'));
+	}
 	addAccount(data) {
 		this.accounts.push(data);
 		fs.writeFileSync(fileAccounts, JSON.stringify(this.accounts, null, '\t'));

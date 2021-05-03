@@ -10,7 +10,8 @@
 <script src="https://unpkg.com/vue"></script>
 
 <div class="container" id="app">
-    <div class="card-deck mt-5">
+    <h1 class="mt-5">Активные заказы</h1>
+    <div class="card-deck mt-3">
         <div v-for="order in orders" class="card" style="max-width: 25%;">
             <img v-bind:src="'https://gta5-ls.ru/images/vehicles/' + order.model + 'f.png'" class="card-img-top" v-bind:alt="order.model">
             <div class="card-body">
