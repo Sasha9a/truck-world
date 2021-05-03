@@ -24,15 +24,6 @@ mp.events.add('startGame', () => {
 	mp.events.callRemote('LoadEnterprises');
 });
 
-mp.events.add('ResEnterprises', (data) => {
-	if (data !== undefined) {
-		let en = JSON.parse(data);
-		for (let i = 0; en.length > i; i++) {
-			Enterprises.AddEnterprises(en[i].position, en[i].name);
-		}
-	}
-});
-
 mp.events.add('playerEnterColshape', (shape) => {
 	if (Enterprises.isSphere(shape) !== -1) {
 		mp.events.callRemote('LoadOrders', Enterprises.isSphere(shape));
@@ -43,6 +34,15 @@ mp.events.add('playerEnterColshape', (shape) => {
 			MarkerFinish.destroy();
 			SphereFinish.destroy();
 			mp.events.callRemote('finishWork');
+		}
+	}
+});
+
+mp.events.add('ResEnterprises', (data) => {
+	if (data !== undefined) {
+		let en = JSON.parse(data);
+		for (let i = 0; en.length > i; i++) {
+			Enterprises.AddEnterprises(en[i].position, en[i].name);
 		}
 	}
 });

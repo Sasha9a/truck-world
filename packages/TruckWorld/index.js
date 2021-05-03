@@ -1,3 +1,3 @@
 require('./events.js');
-require('./parseData.js');
+require('./Data.js');
 require('./commands.js');

@@ -1,4 +1,4 @@
-const {db, findAccount} = require('./parseData.js');
+const {db, findAccount} = require('./Data.js');
 const fs = require("fs");
 
 mp.events.addCommand('save', (player, name = "No name") => {

@@ -19,10 +19,6 @@ class Data {
 	setOrders(data) {
 		this.orders = data;
 	}
-	addOrder(data) {
-		this.orders.push(data);
-		fs.writeFileSync(fileOrders, JSON.stringify(this.orders, null, '\t'));
-	}
 
 	setAccounts(data) {
 		this.accounts = data;
@@ -38,10 +34,6 @@ class Data {
 
 	setEnterprises(data) {
 		this.enterprises = data;
-	}
-	addEnterprises(data) {
-		this.enterprises.push(data);
-		fs.writeFileSync(fileEnterprises, JSON.stringify(this.enterprises, null, '\t'));
 	}
 }
 

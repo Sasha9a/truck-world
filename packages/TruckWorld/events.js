@@ -1,4 +1,4 @@
-const {db, findAccount} = require('./parseData.js');
+const {db, findAccount} = require('./Data.js');
 
 mp.events.add('playerJoin', (player) => {
 	player.model = mp.joaat('s_m_m_autoshop_01');
