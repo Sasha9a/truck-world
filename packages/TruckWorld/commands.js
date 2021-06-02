@@ -1,5 +1,5 @@
-const {db, findAccount} = require('./Data.js');
 const fs = require("fs");
+const Account = require('./models/Account');
 
 mp.events.addCommand('save', (player, name = "No name") => {
 	const saveFile = "savedpos.txt";
@@ -24,10 +24,12 @@ mp.events.addCommand('save', (player, name = "No name") => {
 });
 
 mp.events.addCommand('getmoney', (player) => {
-	let id = findAccount(player.name);
-	if (id !== -1) {
-		player.outputChatBox(`У вас в кармане сейчас \$${db.accounts[id].money}`);
-	} else {
-		console.log(`[ERROR] Ошибка в команде getMoney`);
-	}
+	Account.findById(player.getVariable('user_id'), (err, account) => {
+		if (err) throw err;
+		if (account) {
+			player.outputChatBox(`У вас в кармане сейчас \$${account.money}`);
+		} else {
+			console.log(`[ERROR] Ошибка в команде getMoney`);
+		}
+	});
 });

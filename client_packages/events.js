@@ -4,24 +4,16 @@ let Route;
 let MarkerFinish;
 let SphereFinish;
 
-mp.events.add('startGame', () => {
+mp.events.add('startGame', (data) => {
 	mp.gui.chat.activate(true);
 	mp.gui.chat.show(true);
 
-	mp.game.ped.removeScenarioBlockingArea(0, true);
-	mp.game.streaming.setPedPopulationBudget(3);
-	mp.game.ped.setCreateRandomCops(true);
-	mp.game.vehicle.setRandomBoats(true);
-	mp.game.vehicle.setRandomTrains(true);
-	mp.game.vehicle.setGarbageTrucks(true);
-	mp.game.streaming.setVehiclePopulationBudget(3);
-	mp.game.invoke('0x34AD89078831A4BC'); // SET_ALL_VEHICLE_GENERATORS_ACTIVE
-	mp.game.vehicle.setAllLowPriorityVehicleGeneratorsActive(true);
-	mp.game.vehicle.setNumberOfParkedVehicles(-1);
-	mp.game.vehicle.displayDistantVehicles(true);
-	mp.game.graphics.disableVehicleDistantlights(false);
-
-	mp.events.callRemote('LoadEnterprises');
+	if (data) {
+		let en = JSON.parse(data);
+		for (let i = 0; en.length > i; i++) {
+			Enterprises.AddEnterprises(en[i].position, en[i].name);
+		}
+	}
 });
 
 mp.events.add('playerEnterColshape', (shape) => {
@@ -34,15 +26,6 @@ mp.events.add('playerEnterColshape', (shape) => {
 			MarkerFinish.destroy();
 			SphereFinish.destroy();
 			mp.events.callRemote('finishWork');
-		}
-	}
-});
-
-mp.events.add('ResEnterprises', (data) => {
-	if (data !== undefined) {
-		let en = JSON.parse(data);
-		for (let i = 0; en.length > i; i++) {
-			Enterprises.AddEnterprises(en[i].position, en[i].name);
 		}
 	}
 });

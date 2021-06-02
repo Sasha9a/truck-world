@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@types/ragemp-s": "github:CocaColaBear/types-ragemp-s#v1.0"
+    "@types/ragemp-s": "github:CocaColaBear/types-ragemp-s#v1.0",
+    "mongoose": "^5.12.12"
   }
 }
