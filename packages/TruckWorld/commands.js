@@ -25,7 +25,7 @@ mp.events.addCommand('save', (player, name = "No name") => {
 
 mp.events.addCommand('getmoney', (player) => {
 	Account.findById(player.getVariable('user_id'), (err, account) => {
-		if (err) throw err;
+		if (err) return console.error(err);
 		if (account) {
 			player.outputChatBox(`У вас в кармане сейчас \$${account.money}`);
 		} else {

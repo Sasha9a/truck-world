@@ -86,3 +86,7 @@ const closeWorkBrowser = () => {
 	mp.gui.chat.activate(true);
 	mp.gui.chat.show(true);
 }
+
+mp.keys.bind(0x48, true, () => { // H
+	mp.events.callRemote('createEnterprise');
+});
