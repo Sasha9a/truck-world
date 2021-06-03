@@ -18,3 +18,4 @@ mongoose.connection.on('error', (err) => {
 require('./api');
 require('./events.js');
 require('./commands.js');
+require('./CreateEnterprise');

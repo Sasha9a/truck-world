@@ -16,29 +16,33 @@ function checkStaticID(i) {
 }
 
 mp.events.addCommand('addenter', (player, name) => {
-	if (name === '') return player.outputChatBox(`Введите: /addenter [Название предприятия]`);
+	if (!name) return player.outputChatBox(`Введите: /addenter [Название предприятия]`);
 	player.outputChatBox(`Ожидайте...`);
 	let i = checkStaticID(0);
-	const enter = new Enterprise({
-		static_id: i,
-		name: name
-	});
-	Enterprise.addEnterprise(enter, (err, enterprise) => {
-		if (err) return console.error(err);
-		else {
-			player.outputChatBox(`Предприятие ${name} создано! Перейдите к точке где будет панель заказов и нажмите на H`);
-			player.setVariable('isCreateEnter', 1);
-			player.setVariable('create_enter_id', enterprise._id);
-		}
-	});
+	if (i !== -1) {
+		const enter = new Enterprise({
+			static_id: i,
+			name: name
+		});
+		Enterprise.addEnterprise(enter, (err, enterprise) => {
+			if (err) return console.error(err);
+			else {
+				player.outputChatBox(`Предприятие ${name} создано! Перейдите к точке где будет панель заказов и нажмите на H`);
+				player.setVariable('isCreateEnter', 1);
+				player.setVariable('create_enter_id', enterprise._id);
+			}
+		});
+	} else {
+		player.outputChatBox(`Произошла ошибка`);
+	}
 });
 
 mp.events.add('createEnterprise', (player) => {
 	if (player.getVariable('isCreateEnter') === 1) {
 		const pos = {
-			x: player.position.x,
-			y: player.position.y,
-			z: player.position.z
+			x: player.position.x.toFixed(3),
+			y: player.position.y.toFixed(3),
+			z: player.position.z.toFixed(3)
 		}
 		Enterprise.setPos(player.getVariable('create_enter_id'), pos);
 		player.setVariable('isCreateEnter', 2);
@@ -58,10 +62,10 @@ mp.events.add('createEnterprise', (player) => {
 	} else if (player.getVariable('isCreateEnter') === 3) {
 		if (player.vehicle) {
 			const pos = {
-				x: player.vehicle.position.x,
-				y: player.vehicle.position.y,
-				z: player.vehicle.position.z,
-				heading: player.vehicle.rotation
+				x: player.vehicle.position.x.toFixed(3),
+				y: player.vehicle.position.y.toFixed(3),
+				z: player.vehicle.position.z.toFixed(3),
+				heading: player.vehicle.rotation.z.toFixed(3)
 			}
 			Enterprise.setTS(player.getVariable('create_enter_id'), pos);
 			player.setVariable('isCreateEnter', 4);
@@ -70,9 +74,9 @@ mp.events.add('createEnterprise', (player) => {
 		}
 	} else if (player.getVariable('isCreateEnter') === 4) {
 		const pos = {
-			x: player.position.x,
-			y: player.position.y,
-			z: player.position.z
+			x: player.position.x.toFixed(3),
+			y: player.position.y.toFixed(3),
+			z: player.position.z.toFixed(3)
 		}
 		Enterprise.setFin(player.getVariable('create_enter_id'), pos);
 		player.setVariable('isCreateEnter', 0);
