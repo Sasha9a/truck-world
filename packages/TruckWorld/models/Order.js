@@ -13,3 +13,7 @@ const Order = module.exports = mongoose.model('Order', ModelOrder);
 module.exports.findAll = function (callback) {
 	Order.find(callback);
 }
+
+module.exports.addOrder = function (newOrder, callback) {
+	newOrder.save(callback);
+}

@@ -81,5 +81,11 @@ mp.events.add('createEnterprise', (player) => {
 		Enterprise.setFin(player.getVariable('create_enter_id'), pos);
 		player.setVariable('isCreateEnter', 0);
 		player.outputChatBox(`Координаты записаны! Процесс создания предприятия окончен`);
+		Enterprise.findById(player.getVariable('create_enter_id'), (err, enterprise) => {
+			if (err) return console.error(err);
+			mp.players.forEach((p, id) => {
+				p.call('addEnterprise_event', enterprise.position, enterprise.name);
+			});
+		});
 	}
 });

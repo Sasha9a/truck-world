@@ -19,3 +19,4 @@ require('./api');
 require('./events.js');
 require('./commands.js');
 require('./CreateEnterprise');
+require('./CreateOrder');
