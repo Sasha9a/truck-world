@@ -4,6 +4,7 @@ mp.keys.bind(0x48, true, () => { // H
 	mp.events.callRemote('createEnterprise');
 });
 
-mp.events.add('addEnterprise_event', (pos, name) => {
-	Enterprises.AddEnterprises(pos, name);
+mp.events.add('addEnterprise_event', (data) => {
+	let d = JSON.parse(data);
+	Enterprises.AddEnterprises(d.position, d.name);
 });

@@ -2,7 +2,12 @@ const Order = require('./models/Order');
 const Enterprise = require('./models/Enterprise');
 
 mp.events.addCommand('addorder', (player, fullText) => {
-	let split = fullText.split(' ');
+	let split;
+	if (fullText) {
+		split = fullText.split(' ');
+	} else {
+		split = [];
+	}
 	if (split.length < 5) return player.outputChatBox(`Введите: /addorder [Id предприятия откуда] [Id предприятия куда] [Цена] [Модель авто] [Название товара]`);
 	Enterprise.findByStaticID(split[0], (err, enterprise) => {
 		if (err) return console.error(err);

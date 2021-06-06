@@ -33,3 +33,13 @@ mp.events.addCommand('getmoney', (player) => {
 		}
 	});
 });
+
+mp.events.addCommand('veh', (player) => {
+	mp.vehicles.new(mp.joaat('pfister811'),
+		new mp.Vector3(player.position.x + 2, player.position.y + 2, player.position.z), {
+			heading: player.heading,
+			color: [[0, 0, 0], [255, 255, 255]],
+			dimension: player.dimension,
+			numberPlate: 'ADMIN'
+		});
+});

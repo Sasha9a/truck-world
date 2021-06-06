@@ -1,40 +1,31 @@
 const Enterprise = require('./models/Enterprise');
 
-function checkStaticID(i) {
+function checkStaticID(player, name, i) {
 	Enterprise.findByStaticID(i, (err, enterprise) => {
-		if (err) {
-			console.error(err);
-			return -1;
-		}
+		if (err) return console.error(err);
 		if (!enterprise) {
-			return i;
+			const enter = new Enterprise({
+				static_id: i,
+				name: name
+			});
+			Enterprise.addEnterprise(enter, (err, enterprise) => {
+				if (err) return console.error(err);
+				else {
+					player.outputChatBox(`Предприятие ${name} создано! Перейдите к точке где будет панель заказов и нажмите на H`);
+					player.setVariable('isCreateEnter', 1);
+					player.setVariable('create_enter_id', enterprise._id);
+				}
+			});
 		} else {
-			checkStaticID(++i);
+			checkStaticID(player, name, ++i);
 		}
 	});
-	return 0;
 }
 
 mp.events.addCommand('addenter', (player, name) => {
 	if (!name) return player.outputChatBox(`Введите: /addenter [Название предприятия]`);
 	player.outputChatBox(`Ожидайте...`);
-	let i = checkStaticID(0);
-	if (i !== -1) {
-		const enter = new Enterprise({
-			static_id: i,
-			name: name
-		});
-		Enterprise.addEnterprise(enter, (err, enterprise) => {
-			if (err) return console.error(err);
-			else {
-				player.outputChatBox(`Предприятие ${name} создано! Перейдите к точке где будет панель заказов и нажмите на H`);
-				player.setVariable('isCreateEnter', 1);
-				player.setVariable('create_enter_id', enterprise._id);
-			}
-		});
-	} else {
-		player.outputChatBox(`Произошла ошибка`);
-	}
+	checkStaticID(player, name, 0);
 });
 
 mp.events.add('createEnterprise', (player) => {
@@ -58,7 +49,7 @@ mp.events.add('createEnterprise', (player) => {
 		player.setVariable('id_car_enter', car.id);
 		player.setVariable('isCreateEnter', 3);
 		player.putIntoVehicle(car, 0);
-		player.outputChatBox(`Припаркуйте грузовик, где будут спавнится рабочий транспорт`);
+		player.outputChatBox(`Припаркуйте грузовик, где будут спавнится рабочий транспорт и нажмите на H`);
 	} else if (player.getVariable('isCreateEnter') === 3) {
 		if (player.vehicle) {
 			const pos = {
@@ -70,7 +61,7 @@ mp.events.add('createEnterprise', (player) => {
 			Enterprise.setTS(player.getVariable('create_enter_id'), pos);
 			player.setVariable('isCreateEnter', 4);
 			mp.vehicles.at(player.getVariable('id_car_enter')).destroy();
-			player.outputChatBox(`Координаты записаны! Теперь идите на точку, куда будут выгружаться груз`);
+			player.outputChatBox(`Координаты записаны! Теперь идите на точку, куда будут выгружаться груз и нажмите на H`);
 		}
 	} else if (player.getVariable('isCreateEnter') === 4) {
 		const pos = {
@@ -83,8 +74,8 @@ mp.events.add('createEnterprise', (player) => {
 		player.outputChatBox(`Координаты записаны! Процесс создания предприятия окончен`);
 		Enterprise.findById(player.getVariable('create_enter_id'), (err, enterprise) => {
 			if (err) return console.error(err);
-			mp.players.forEach((p, id) => {
-				p.call('addEnterprise_event', enterprise.position, enterprise.name);
+			mp.players.forEach((p) => {
+				p.call('addEnterprise_event', [JSON.stringify(enterprise)]);
 			});
 		});
 	}
