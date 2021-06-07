@@ -12,4 +12,4 @@ ____
 
 # Обзор
 
-[![Обзор](https://img.youtube.com/vi/v4Bz9r73jGE/0.jpg)](https://youtu.be/v4Bz9r73jGE)
+[![Обзор](https://img.youtube.com/vi/w9e263y8ciQ/0.jpg)](https://youtu.be/w9e263y8ciQ)
