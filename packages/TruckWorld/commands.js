@@ -22,24 +22,3 @@ mp.events.addCommand('save', (player, name = "No name") => {
 		}
 	});
 });
-
-mp.events.addCommand('getmoney', (player) => {
-	Account.findById(player.getVariable('user_id'), (err, account) => {
-		if (err) return console.error(err);
-		if (account) {
-			player.outputChatBox(`У вас в кармане сейчас \$${account.money}`);
-		} else {
-			console.log(`[ERROR] Ошибка в команде getMoney`);
-		}
-	});
-});
-
-mp.events.addCommand('veh', (player) => {
-	mp.vehicles.new(mp.joaat('pfister811'),
-		new mp.Vector3(player.position.x + 2, player.position.y + 2, player.position.z), {
-			heading: player.heading,
-			color: [[0, 0, 0], [255, 255, 255]],
-			dimension: player.dimension,
-			numberPlate: 'ADMIN'
-		});
-});

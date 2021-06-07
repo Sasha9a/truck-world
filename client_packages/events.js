@@ -1,10 +1,11 @@
 const Enterprises = require(`./ft_Enterprises`).Enterprises;
 let WorkBrowser;
+let BackgroundBrowser;
 let Route;
 let MarkerFinish;
 let SphereFinish;
 
-mp.events.add('startGame', (data) => {
+mp.events.add('startGame', (data, money) => {
 	mp.gui.chat.activate(true);
 	mp.gui.chat.show(true);
 
@@ -14,6 +15,9 @@ mp.events.add('startGame', (data) => {
 			Enterprises.AddEnterprises(en[i].position, en[i].name);
 		}
 	}
+
+	BackgroundBrowser = mp.browsers.new('package://cef/money/index.html');
+	BackgroundBrowser.execute(`setMoney('${money}');`);
 });
 
 mp.events.add('playerEnterColshape', (shape) => {
@@ -27,6 +31,12 @@ mp.events.add('playerEnterColshape', (shape) => {
 			SphereFinish.destroy();
 			mp.events.callRemote('finishWork');
 		}
+	}
+});
+
+mp.events.add('addMoneyWork', (money) => {
+	if (BackgroundBrowser.active) {
+		BackgroundBrowser.execute(`setMoney('${money}');`);
 	}
 });
 
@@ -72,6 +82,10 @@ mp.events.add('startDriveWork', (vector) => {
 		visible: true
 	});
 	SphereFinish = mp.colshapes.newSphere(vec.x, vec.y, vec.z + 0.5, 4);
+});
+
+mp.events.add("playerCreateWaypoint", (position) => {
+	mp.events.callRemote('setPos', position);
 });
 
 mp.keys.bind(0x09, true, () => { // TAB

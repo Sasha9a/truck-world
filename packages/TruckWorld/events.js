@@ -25,7 +25,7 @@ mp.events.add('playerJoin', (player) => {
 		console.log(`Присоединился к игре ${user.name}: Состояние \$${user.money}`);
 		Enterprise.findAll((err, enterprises) => {
 			if (err) return console.error(err);
-			player.call('startGame', [JSON.stringify(enterprises)]);
+			player.call('startGame', [JSON.stringify(enterprises), user.money]);
 		});
 		player.setVariable('user_id', user._id);
 	});
@@ -104,9 +104,18 @@ mp.events.add('finishWork', (player) => {
 			if (err) return console.error(err);
 			Account.giveMoney(player.name, order.price, (err) => {
 				if (err) return console.error(err);
+				player.call('addMoneyWork', [account.money + order.price]);
 				mp.vehicles.at(player.getVariable('car')).destroy();
 				player.outputChatBox(`Вы успешно доставили груз. Вы заработали: \$${order.price}`);
 			});
 		});
 	});
+});
+
+mp.events.add('setPos', (player, position) => {
+	if (player.vehicle && !player.seat) {
+		player.vehicle.position = new mp.Vector3(position.x, position.y, position.z + 2);
+	} else {
+		player.position = new mp.Vector3(position.x, position.y, position.z + 1);
+	}
 });
