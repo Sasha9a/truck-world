@@ -1,4 +1,6 @@
 import './setup';
+import './events';
+import './commands';
 
 import { SHARED_CONSTANTS } from '@shared/constants';
 
