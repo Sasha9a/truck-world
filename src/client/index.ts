@@ -13,3 +13,11 @@ mp.events.add('playerReady', () => {
 
 	mp.players.local.customMethod();
 });
+
+mp.events.add('PED:giveWeapon', (ped: PedMp) => {
+	ped.giveWeapon(mp.game.joaat('weapon_assaultrifle_mk2'), 1000, true);
+});
+
+mp.events.add('PED:setArmour', (ped: PedMp) => {
+	ped.setArmour(100);
+});
